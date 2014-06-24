@@ -1,0 +1,85 @@
+<div class="col-md-12">
+	<h1>Sensor Network Metadata Management</h1>
+	<div class="col-md-12">
+		<div class="col-md-6" ng-init="getSensorNetworkIDs()" >
+			<h2>Sensor Network ID Lists</h2>
+			<div class="col-md-12">
+				<div class="list-group">
+				  <p class="list-group-item" style="cursor: pointer;" ng-repeat="snID in snIDs" ng-click="inputSnID(snID)">
+				    {{snID}}
+				  </p>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<h2>Sensor Network Metadata</h2>
+			<h3>Add Metadata</h3>
+			<div class="col-md-12">
+				<div class="input-group">
+					<span class="input-group-addon">Name</span>
+					<input type="text" class="form-control" placeholder="Sensor Network ID" ng-model="seed.name">
+				</div>
+
+				<div class="input-group">
+					<span class="input-group-addon">Member</span>
+					<input type="text" class="form-control"  ng-model="seed.measure">
+				</div>
+				<div class="col-md-12 text-center">
+					<button class="btn btn-primary" ng-click="setSensorNetworkMeta()">Create Sensor Network</button>
+				</div>
+			</div>
+			<h3>Load Metadata</h3>
+			<div class="col-md-12">
+				<div class="col-md-8">
+					<input type="text" class="form-control" placeholder="Input SensorNetwork ID" ng-model="findID">
+				</div>
+				<div class="col-md-4">
+					<button class="btn btn-primary" ng-click="getSensorNetworkMeta()">Load Data</button>
+				</div>
+			
+			<div class="col-md-12">
+				<div class="panel panel-default" ng-show="metaOK">
+					<div class="panel-heading">
+					<h3 class="panel-title">Sensor Network ID: {{findID}}</h3>
+					</div>
+					<div class="panel-body">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Label</th>
+									<th>Value</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="">
+									<td>Name</td>
+									<td>{{meta.def_meta.name}}</td>
+								</tr>
+								<tr>
+									<td>Member</td>
+									<td>
+										<ul class="list-group">
+											<li class="list-group-item" ng-repeat="member in meta.def_meta.members">{{member}}</li>
+										</ul>
+									</td>
+								</tr>
+								<tr class="">
+									<td>Registration Time</td>
+									<td>{{meta.def_meta.creationtTime}}</td>
+								</tr>
+							</tbody>
+						</table>
+						<p>Optional Metadata</p>
+						<ul class="list-group">
+							<li class="list-group-item" ng-repeat="(key, value) in meta.opt_meta.elmts">{{key}}: {{value}}</li>
+						</ul>
+						<p>Tag Metadata</p>
+						<ul class="list-group">
+							<li class="list-group-item" ng-repeat="tag in meta.snsr_tag.tags">{{tag}}</li>
+						</ul>
+					</div>
+				</div>
+			</div><!--Sensor Network Meta Table DIV -->
+		</div><!--Get Sensor Network Meta DIV -->
+	</div><!--Entire Out DIV -->
+</div>

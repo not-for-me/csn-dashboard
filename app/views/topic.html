@@ -1,0 +1,39 @@
+<div class="col-md-12">
+	<h1>Topic Status</h1>
+	<div class="col-md-12" ng-init="getTopicStatus()">
+		<div class="col-md-6">
+			<h2>Input Message Status</h2>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Topic Name</th>
+						<th>Input Num</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="" ng-repeat="topic in topics.inNum | orderBy:'topicName':false">
+						<td>{{topic.topicName}}</td>
+						<td>{{topic.num}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-6">
+			<h2>Output Message Status</h2>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Topic Name</th>
+						<th>Output Num</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="" ng-repeat="topic in topics.outNum | orderBy:'topicName':false">
+						<td>{{topic.topicName}}</td>
+						<td>{{topic.num}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

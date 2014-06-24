@@ -1,0 +1,81 @@
+<div class="col-md-12">
+	<h1>Sensor Metadata Management</h1>
+	<div class="col-md-12">
+		<div class="col-md-6" ng-init="getSensorIDs()" >
+			<h2>Sensor ID Lists</h2>
+			<div class="col-md-12">
+				<div class="list-group">
+				  <p class="list-group-item" style="cursor: pointer;" ng-repeat="snsrID in snsrIDs" ng-click="inputSnsrID(snsrID)">
+				    {{snsrID}}
+				  </p>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<h2>Sensor Metadata</h2>
+			<h3>Add Metadata</h3>
+			<div class="col-md-12">
+				<div class="input-group">
+					<span class="input-group-addon">Name</span>
+					<input type="text" class="form-control" placeholder="Sensor ID" ng-model="seed.name">
+				</div>
+
+				<div class="input-group">
+					<span class="input-group-addon">Measurment</span>
+					<input type="text" class="form-control"  ng-model="seed.measure">
+				</div>
+				<div class="col-md-12 text-center">
+					<button class="btn btn-primary" ng-click="setSensorMeta()">Add Data</button>
+				</div>
+			</div>
+			<h3>Load Metadata</h3>
+			<div class="col-md-12">
+				<div class="col-md-8">
+					<input type="text" class="form-control" id="sensor-id" placeholder="Input Sensor ID" ng-model="findID">
+				</div>
+				<div class="col-md-4">
+					<button class="btn btn-primary" ng-click="getSensorMeta()">Load Data</button>
+				</div>
+			
+			<div class="col-md-12">
+				<div class="panel panel-default" ng-show="metaOK">
+					<div class="panel-heading">
+					<h3 class="panel-title">Sensor ID: {{findID}}</h3>
+					</div>
+					<div class="panel-body">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>Label</th>
+									<th>Value</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr class="">
+									<td>Name</td>
+									<td>{{meta.def_meta.name}}</td>
+								</tr>
+								<tr class="">
+									<td>Measurement</td>
+									<td>{{meta.def_meta.measure}}</td>
+								</tr>
+								<tr class="">
+									<td>Registration Time</td>
+									<td>{{meta.def_meta.reg_time}}</td>
+								</tr>
+							</tbody>
+						</table>
+						<p>Optional Metadata</p>
+						<ul class="list-group">
+							<li class="list-group-item" ng-repeat="(key, value) in meta.opt_meta.elmts">{{key}}: {{value}}</li>
+						</ul>
+						<p>Tag Metadata</p>
+						<ul class="list-group">
+							<li class="list-group-item" ng-repeat="tag in meta.snsr_tag.tags">{{tag}}</li>
+						</ul>
+					</div>
+				</div>
+			</div><!--Sensor Meta Table DIV -->
+		</div><!--Get Sensor Meta DIV -->
+	</div><!--Entire Out DIV -->
+</div>
