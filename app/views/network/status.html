@@ -1,0 +1,71 @@
+<div class="col-md-12 col-sm-12 col-xs-12" ng-init="getSensorNetworkCount()">
+	<div class="page-header">
+		<h1>Sensor Network Status</h1>
+	</div>
+
+	<div class="row col-md-12 col-sm-12 col-xs-12">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">Sumamry</h3>
+			</div>
+
+			<table class="table table table-bordered">
+				<thead>
+					<tr>
+						<th>Network Status</th>
+						<th>Number of Sensor Networks</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="">
+						<td>Operating</td>
+						<td>{{snCount.operatingCNT}}</td>
+					</tr>
+					<tr class="">
+						<td>Stopped</td>
+						<td>{{snCount.stoppedCNT}}</td>
+					</tr>
+					<tr class="">
+						<td>Faulted</td>
+						<td>{{snCount.faultedCNT}}</td>
+					</tr>
+					<tr class="">
+						<td>Total</td>
+						<td>{{snCount.totalCNT}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div> <!-- [1st row] Sensor Network summary panel div -->
+	<div class="row col-md-12 col-sm-12 col-xs-12" ng-init="getSensorNetworks(1)">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title">List of Sensor Networks</h3>
+			</div>
+			<div class="panel-body">
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th class="text-center">ID</th>
+							<th class="text-center">Name</th>
+							<th class="text-center">Status</th>
+							<th class="text-center">Member Network Count</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="text-center" style="cursor: pointer;" ng-repeat="network in snData.networks">
+							<td>{{network.id}}</td>
+							<td>{{network.name}}</td>
+							<td>{{network.status}}</td>
+							<td>{{network.memberCount}}</td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="text-center">
+					<pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" items-per-page="itemsPerPage" ng-change="getSensorNetworks(currentPage)" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination>
+				</div>
+			</div>
+		</div>
+	</div> <!-- [2nd row] Sensor Network List panel div -->
+
+</div>

@@ -1,10 +1,13 @@
 {
   "name": "csndashboard",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "wiredep": "^2.2.2"
+  },
   "devDependencies": {
     "grunt": "^0.4.1",
     "grunt-autoprefixer": "^0.7.3",
+    "grunt-bower-install": "^1.6.0",
     "grunt-concurrent": "^0.5.0",
     "grunt-contrib-clean": "^0.5.0",
     "grunt-contrib-concat": "^0.4.0",

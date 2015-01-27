@@ -10,7 +10,7 @@
 angular.module('csnDashboardApp')
   .controller('VirtualController', function ($scope, $resource) {
     $scope.getTopicStatus = function() {
-      var statusResource = $resource('/CSN-REST/csn/broker/topics');
+      var statusResource = $resource('/csn-restapi/csn/broker/topics');
       statusResource.get().$promise
         .then(function(response) {
           $scope.topics = response;

@@ -1,39 +1,72 @@
-<div class="col-md-12">
-	<h1>Topic Status</h1>
-	<div class="col-md-12" ng-init="getTopicStatus()">
-		<div class="col-md-6">
-			<h2>Input Message Status</h2>
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Topic Name</th>
-						<th>Input Num</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr class="" ng-repeat="topic in topics.inNum | orderBy:'topicName':false">
-						<td>{{topic.topicName}}</td>
-						<td>{{topic.num}}</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="col-md-6">
-			<h2>Output Message Status</h2>
-			<table class="table">
-				<thead>
-					<tr>
-						<th>Topic Name</th>
-						<th>Output Num</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr class="" ng-repeat="topic in topics.outNum | orderBy:'topicName':false">
-						<td>{{topic.topicName}}</td>
-						<td>{{topic.num}}</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+<div class="col-md-12 col-sm-12 col-xs-12">
+	<div class="page-header">
+		<h1>Message Queue Management</h1>
 	</div>
+
+	<div class="row col-md-12 col-sm-12 col-xs-12">
+		<div id="queue-status-panel" class="col-md-6 col-sm-6 col-xs-12" ng-init="getTopicStatus()">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Message Queue List</h3>
+				</div>
+				<table class="table table-bordered">
+					<thead>
+						<tr>
+							<th>Queue(Topic) Full Name</th>
+							<th>Incoming MSG CNT</th>
+							<th>Outgoing MSG CNT</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr class="" ng-repeat="topic in topicList | orderBy:'topicName':false">
+							<td>{{topic.topicName}}</td>
+							<td>{{topic.inNum}}</td>
+							<td>{{topic.outNum}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div> <!-- [panel] -->
+		</div> <!-- [1st col-box] -->
+
+		<div id="queue-status-panel" class="col-md-6 col-sm-6 col-xs-12" ng-init="getBrokerStatus()">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Message Queue Status</h3>
+				</div>
+				<table class="table table-bordered">
+					<tbody>
+						<tr class="">
+							<th>Queue Health</th>
+							<td>{{broker.status}}</td>
+						</tr>
+						<tr class="">
+							<th>Ratio of Storage Usage</th>
+							<td>{{broker.storage}} %</td>
+						</tr>
+						<tr class="">
+							<th>Ratio of Memory Usage</th>
+							<td>{{broker.mem}} %</td>
+						</tr>
+						<tr class="">
+							<th>Producer Num</th>
+							<td>{{broker.proNum}}</td>
+						</tr>
+						<tr class="">
+							<th>Consumer Num</th>
+							<td>{{broker.conNum}}</td>
+						</tr>
+						<tr class="">
+							<th>Total In MSG CNT</th>
+							<td>{{broker.inNum}}</td>
+						</tr>
+						<tr class="">
+							<th>Total Out MSG CNT</th>
+							<td>{{broker.outNum}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div> <!-- [panel] -->
+		</div> <!-- [2nd col-box] -->
+		
+	</div> <!-- [1st row] Message Queue management div -->
 </div>

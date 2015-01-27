@@ -10,8 +10,11 @@
 angular.module('csnDashboardApp')
   .controller('CSNController', function ($scope, $resource) {
     
+    $scope.persistStatus = "Deactivated";
+    $scope.meta = {csnName:'-', adminName:'-', adminEmail:'-', persistOption: false, creationTime:'-'};
+
     $scope.setCSNData = function() {
-      var postResource = $resource('/CSN-REST/csn');
+      var postResource = $resource('/csn-restapi/csn');
       var config = {config: $scope.meta};
       postResource.save(config).$promise
         .then(function(response) {
@@ -21,22 +24,22 @@ angular.module('csnDashboardApp')
     };
 
     $scope.getCSNData = function() {
-      var metadataResource = $resource('/CSN-REST/csn');
+      var metadataResource = $resource('/csn-restapi/csn');
       metadataResource.get().$promise
         .then(function(response) {
           $scope.meta = response;
         })
         .catch(function(response) {
           console.log(response);
-          $scope.meta = {csnName:'-', adminName:'-', adminEmail:'-', creationTime:'-'};
+          $scope.meta = {csnName:'-', adminName:'-', adminEmail:'-', persistOption: false, creationTime:'-'};
         });
     };
 
     $scope.removeCSNData = function() {
-      var metadataResource = $resource('/CSN-REST/csn');
+      var metadataResource = $resource('/csn-restapi/csn');
       metadataResource.remove().$promise
         .then(function() {
-          $scope.meta = {csnName:'-', adminName:'-', adminEmail:'-', creationTime:'-'};
+          $scope.meta = {csnName:'-', adminName:'-', adminEmail:'-',  persistOption: false, creationTime:'-'};
         })
         .catch(function(response) {
           console.log(response);
@@ -44,7 +47,7 @@ angular.module('csnDashboardApp')
     };
 
     $scope.startCSN = function () {
-      var postResource = $resource('/CSN-REST/csn/start');
+      var postResource = $resource('/csn-restapi/csn?action=start');
       if($scope.meta.csnName === '-') {
         window.alert('Please Input Metadata');
       }
@@ -52,7 +55,8 @@ angular.module('csnDashboardApp')
         window.alert('Already Running...');
       }
       else {
-        var config = {config: $scope.meta};
+        
+        var config = $scope.meta;
         postResource.save(config).$promise
           .then(function(response){
             console.log(response);
@@ -65,7 +69,7 @@ angular.module('csnDashboardApp')
     };
 
     $scope.restartCSN = function () {
-      var postResource = $resource('/CSN-REST/csn/restart');
+      var postResource = $resource('/csn-restapi/csn?action=restart');
       if($scope.meta.csnName === '-') {
         window.alert('CSN isn\'t running');
       }
@@ -83,7 +87,7 @@ angular.module('csnDashboardApp')
     };
 
     $scope.stopCSN = function () {
-      var postResource = $resource('/CSN-REST/csn/stop');
+      var postResource = $resource('/csn-restapi/csn?action=stop');
       postResource.save().$promise
         .then(function(response){
           console.log(response);
@@ -95,7 +99,7 @@ angular.module('csnDashboardApp')
     };
 
     $scope.getCSNStatus = function() {
-      var statusResource = $resource('/CSN-REST/csn/status');
+      var statusResource = $resource('/csn-restapi/csn/status');
       statusResource.get().$promise
         .then(function(response) {
           $scope.status = response;
@@ -113,7 +117,7 @@ angular.module('csnDashboardApp')
     };
 
     $scope.getBrokerStatus = function() {
-      var metadataResource = $resource('/CSN-REST/csn/broker/status');
+      var metadataResource = $resource('/csn-restapi/csn/broker/status');
       metadataResource.get().$promise
         .then(function(response) {
           $scope.broker = response;

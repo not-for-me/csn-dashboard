@@ -11,41 +11,50 @@
 angular
   .module('csnDashboardApp', [
     'ngResource',
-    'ngRoute'
+    'ngRoute',
+    'ui.bootstrap'
   ])
   .config(function ($routeProvider) {
     $routeProvider
       .when('/', {
-        templateUrl: 'views/main.html',
-        controller: 'MainController'
+        templateUrl: 'views/main.html'
       })
       .when('/csn', {
         templateUrl: 'views/csn.html',
         controller: 'CSNController'
       })
+      .when('/networks/status', {
+        templateUrl: 'views/network/status.html',
+        controller: 'NetworkStatusController'
+      })
+      .when('/networks/mgnt', {
+        templateUrl: 'views/network/management.html',
+        controller: 'NetworkMgntController'
+      })
       .when('/topic', {
         templateUrl: 'views/topic.html',
         controller: 'TopicController'
       })
-      .when('/sensor-network', {
-        templateUrl: 'views/network.html',
-        controller: 'SensorNetworkController'
+      .when('/search/network', {
+        templateUrl: 'views/search/network.html',
+        controller: 'NetworkSearchController'
       })
-      .when('/sensor', {
-        templateUrl: 'views/sensor.html',
-        controller: 'SensorController'
+      .when('/search/data', {
+        templateUrl: 'views/search/data.html',
+        controller: 'DataSearchController'
       })
       .when('/virtual', {
-        templateUrl: 'views/virtual.html',
+        templateUrl: 'views/5-virtual.html',
         controller: 'VirtualController'
       })
-      .when('/about', {
-        templateUrl: 'views/about.html',
-        controller: 'AboutController'
+      .when('/etc/about', {
+        templateUrl: 'views/etc/about.html'
       })
-      .when('/contact', {
-        templateUrl: 'views/contact.html',
-        controller: 'ContactController'
+      .when('/etc/contact', {
+        templateUrl: 'views/etc/contact.html'
+      })
+      .when('/etc/help', {
+        templateUrl: 'views/etc/help.html'
       })
       .otherwise({
         redirectTo: '/'

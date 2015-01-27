@@ -341,23 +341,37 @@ module.exports = function (grunt) {
       ],
       test: [
         'copy:styles'
-      ],
-      dist: [
-        'copy:styles',
-        'imagemin',
-        'svgmin'
-      ]
-    },
-
-    // Test settings
+      ], dist: [ 'copy:styles', 'imagemin', 'svgmin' ] }, // Test settings
     karma: {
       unit: {
         configFile: 'test/karma.conf.js',
         singleRun: true
       }
+    },
+
+	bowerInstall: {
+      target: {
+        // Point to the files that should be updated when
+	    // you run `grunt bower-install`
+        src: [
+		  'app/views/**/*.html',   // .html support...
+		  'app/views/**/*.jade',   // .jade support...
+	      'app/styles/main.scss',  // .scss & .sass support...
+	      'app/config.yml'         // and .yml & .yaml support out of the box!
+	    ],
+
+		// Optional:
+		// ---------
+		cwd: '',
+		dependencies: true,
+		devDependencies: false,
+	    exclude: [],
+	    fileTypes: {},
+	    ignorePath: '',
+	    overrides: {}
+      }
     }
   });
-
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
@@ -409,4 +423,7 @@ module.exports = function (grunt) {
     'test',
     'build'
   ]);
+
+  grunt.loadNpmTasks('grunt-bower-install');
+
 };

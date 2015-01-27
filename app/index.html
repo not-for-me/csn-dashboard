@@ -21,42 +21,55 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container-fluid">
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/">Conceptually Manageable Sensor Network</a>
+          <a class="navbar-brand" href="#">CSN Dashboard</a>
         </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">Contact</a></li>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/csn-restapi/#/csn">CSN Management</a></li>
+             <li class="dropdown">
+              <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Sensor Networks <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="/csn-restapi/#/networks/status">Status</a></li>
+                <li><a href="/csn-restapi/#/networks/mgnt">Management</a></li>
+              </ul>
+            </li>
+            <li><a href="/csn-restapi/#/topic">Message Queue</a></li>
+            
+            <li class="dropdown">
+              <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Search<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="/csn-restapi/#/search/network">Network</a></li>
+                <li><a href="/csn-restapi/#/search/data">Data</a></li>
+              </ul>
+            </li>
+            <li><a href="/csn-restapi/#/virtual">Virtual Data</a></li>
+             <li class="dropdown">
+              <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">CSN<span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="/csn-restapi/#/etc/about">About CSN</a></li>
+                <li><a href="/csn-restapi/#/etc/contact">Contact</a></li>
+                <li><a href="/csn-restapi/#/etc/help">Help</a></li>
+              </ul>
+            </li>
+            
           </ul>
-        </div>
+        </div><!--/.nav-collapse -->
       </div>
+    </nav>
+    <div class="main" ng-view=""></div>
+    <div class="footer">
+      <p>Copyright. CIR Lab, Konkuk Univ, 2015.</p>
     </div>
-
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-sm-3 col-md-3 sidebar">
-          <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Home</a></li>
-            <li><a href="/#/csn">CSN Configurations</a></li>
-            <li><a href="/#/topic">Topic Status</a></li>
-            <li><a href="/#/sensor-network">Sensor Network Management</a></li>
-            <li><a href="/#/sensor">Sensor Management</a></li>
-            <li><a href="/#/virtual">Virtual Data Generator</a></li>
-          </ul>
-        </div>
-        <div class="col-sm-9 col-md-9 main" ng-view=""></div>
-      </div>
-      <div class="footer">
-        <p>CIR Lab, Konkuk Univ.</p>
-      </div>
-    </div>
-
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
      <script>
@@ -78,22 +91,23 @@
     <!-- bower:js -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
     <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/json3/lib/json3.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
     <script src="bower_components/angular-resource/angular-resource.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
 
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/csn.js"></script>
-        <script src="scripts/controllers/topic.js"></script>
-        <script src="scripts/controllers/network.js"></script>
-        <script src="scripts/controllers/sensor.js"></script>
-        <script src="scripts/controllers/virtual.js"></script>
-        <script src="scripts/controllers/about.js"></script>
-        <script src="scripts/controllers/contact.js"></script>
-        <!-- endbuild -->
+    <!-- build:js({.tmp,app}) scripts/scripts.js -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/csn.js"></script>
+    <script src="scripts/controllers/network/status.js"></script>
+    <script src="scripts/controllers/network/mgnt.js"></script>
+    <script src="scripts/controllers/topic.js"></script>
+    <script src="scripts/controllers/search/network.js"></script>
+    <script src="scripts/controllers/search/data.js"></script>
+    <script src="scripts/controllers/virtual.js"></script>
+    <!-- endbuild -->
 </body>
 </html>
