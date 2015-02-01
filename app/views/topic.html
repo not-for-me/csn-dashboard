@@ -7,14 +7,14 @@
 		<div id="queue-status-panel" class="col-md-6 col-sm-6 col-xs-12" ng-init="getTopicStatus()">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h3 class="panel-title">Message Queue List</h3>
+					<h3 class="panel-title">Topic List</h3>
 				</div>
 				<table class="table table-bordered">
 					<thead>
 						<tr>
 							<th>Queue(Topic) Full Name</th>
-							<th>Incoming MSG CNT</th>
-							<th>Outgoing MSG CNT</th>
+							<th>Incoming Message Count</th>
+							<th>Outgoing Message Count</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -56,11 +56,11 @@
 							<td>{{broker.conNum}}</td>
 						</tr>
 						<tr class="">
-							<th>Total In MSG CNT</th>
+							<th>Total In Message Count</th>
 							<td>{{broker.inNum}}</td>
 						</tr>
 						<tr class="">
-							<th>Total Out MSG CNT</th>
+							<th>Total Out Message Count</th>
 							<td>{{broker.outNum}}</td>
 						</tr>
 					</tbody>

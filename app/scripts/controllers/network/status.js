@@ -11,7 +11,7 @@ angular.module('csnDashboardApp')
   .controller('NetworkStatusController', function ($scope, $resource, $http, $log) {
 
     $scope.pageChanged = function() {
-      $log.log('Page changed to: ' + $scope.currentPage);
+      $log.info('Page changed to: ' + $scope.currentPage);
     };
 
     $scope.getSensorNetworks = function(curPage) {
@@ -22,7 +22,7 @@ angular.module('csnDashboardApp')
       var SensorNetworkIDResource = $resource('/csn-restapi/csn/networks', {index:$scope.pageIndex, num:$scope.itemsPerPage});
       SensorNetworkIDResource.get().$promise
         .then(function(data) {
-          console.log(data);
+          $log.info("Network Data: " + JSON.stringify(data));
           $scope.snData = data;
         })
         .catch(function(response) {
@@ -34,7 +34,7 @@ angular.module('csnDashboardApp')
 
     $scope.getSensorNetworkCount = function() {
       $http.get('/csn-restapi/csn/networks?select=counts').success(function(data){
-        console.log(data);
+        $log.info("Network Count: " + JSON.stringify(data));
         $scope.snCount = data;
         $scope.totalItems = $scope.snCount.operatingCNT;
       });

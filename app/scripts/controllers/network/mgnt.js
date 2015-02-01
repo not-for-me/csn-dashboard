@@ -9,25 +9,52 @@
  */
 angular.module('csnDashboardApp')
   .controller('NetworkMgntController', function ($scope, $resource, $http, $modal, $log) {
-    $scope.newNetwork = {members: [], metadata: [], tags:[]};
+    $scope.initTempNetwork = function() {
+      $scope.newNetwork = {name:"", members: [], metadata: [], tags:[]};
+      $scope.temp = {metaKey:"", metaValue:"", tag:""};
+    }
 
     $scope.setSensorNetworkMeta = function() {
       var postResource = $resource('/csn-restapi/csn/networks');
       postResource.save($scope.newNetwork).$promise
         .then(function(response) {
-          console.log(response);
+          $log.info("Network Registered: " + JSON.stringify(response));
           window.alert('Succefully add SensorNetwork Metadata');
+          $scope.getSensorNetworks(1);
+          $scope.initTempNetwork();
+          $scope.getSensorNetworkCount();
         });
     };
 
+    
+
     $scope.addMetadata = function() {
-      $scope.newNetwork.metadata.push( { key:$scope.temp.metaKey, value:$scope.temp.metaValue } );
-      console.log($scope.newNetwork.metadata);
+      var conflictFlag = false;
+
+      if($scope.temp.metaKey === "" || $scope.temp.metaValue === "") {
+        window.alert("Please correctly input metadata key or value");
+      } else {
+        $scope.newNetwork.metadata.forEach(function(meta){
+          if( meta.metaKey == $scope.temp.metaKey )
+            conflictFlag = true;
+        });
+        if(conflictFlag)
+          window.alert("You can't put identical metadata key");
+        else 
+          $scope.newNetwork.metadata.push( { metaKey:$scope.temp.metaKey, metaValue:$scope.temp.metaValue } );
+        
+        $log.info("Added Metadata: " + JSON.stringify($scope.newNetwork.metadata));
+      }
     };
 
      $scope.addTag = function() {
-      $scope.newNetwork.tags.push($scope.temp.tag);
-      console.log($scope.newNetwork.tags);
+      if($scope.temp.tag === "") {
+        window.alert("Please correctly input tag");
+      }
+      else {
+       $log.info("Added Tag: " + JSON.stringify($scope.newNetwork.tags));
+       $scope.newNetwork.tags.push($scope.temp.tag);
+      }
     };
 
     $scope.open = function (size) {
@@ -66,13 +93,15 @@ angular.module('csnDashboardApp')
       var deleteResource = $resource('/csn-restapi/csn/networks/:snID', {snID:'@id'});
       deleteResource.delete({snID:id}).$promise
         .then(function(response) {
-          console.log(response);
+          $log.info("Deleted Network: " + JSON.stringify(response));
           window.alert('Succefully Delete SensorNetwork Metadata');
+          $scope.getSensorNetworks(1);
+          $scope.getSensorNetworkCount();
         });
     };
 
     $scope.pageChanged = function() {
-      $log.log('Page changed to: ' + $scope.currentPage);
+      $log.info('Page changed to: ' + $scope.currentPage);
     };
 
     $scope.getSensorNetworks = function(curPage) {
@@ -83,11 +112,11 @@ angular.module('csnDashboardApp')
       var SensorNetworkIDResource = $resource('/csn-restapi/csn/networks', {index:$scope.pageIndex, num:$scope.itemsPerPage});
       SensorNetworkIDResource.get().$promise
         .then(function(data) {
-          console.log(data);
+          $log.info("Network Data: " + JSON.stringify(data));
           $scope.snData = data;
         })
         .catch(function(response) {
-          console.log(response);
+           $log.info("Error: " + JSON.stringify(response));
         });
 
         $scope.pageChanged();
@@ -95,7 +124,7 @@ angular.module('csnDashboardApp')
 
     $scope.getSensorNetworkCount = function() {
       $http.get('/csn-restapi/csn/networks?select=counts').success(function(data){
-        console.log(data);
+        $log.info("Network Count: " + JSON.stringify(data));
         $scope.snCount = data;
         $scope.totalItems = $scope.snCount.operatingCNT;
       });
@@ -106,7 +135,7 @@ angular.module('csnDashboardApp')
       var SensorNetworkResource = $resource('/csn-restapi/csn/networks/:snID', {snID:'@id'});
       SensorNetworkResource.get({snID:$scope.findID}).$promise
         .then(function(response) {
-          console.log(response);
+          $log.info("Network Metadata: " + JSON.stringify(response));
           $scope.meta = response;
           $scope.metaOK = true;
         })
@@ -118,7 +147,7 @@ angular.module('csnDashboardApp')
 
     $scope.getSensorNetworkIDs = function() {
       $http.get('/csn-restapi/csn/networks?select=ids').success(function(data){
-        console.log(data);
+        $log.info("Network IDs: " + JSON.stringify(data));
         $scope.snIDs = data;
       });
     };
@@ -130,7 +159,7 @@ angular.module('csnDashboardApp')
   });
 
 angular.module('csnDashboardApp')
-  .controller('ModalInstanceCtrl', function ($scope, $resource, $modalInstance) {
+  .controller('ModalInstanceCtrl', function ($scope, $resource, $modalInstance, $log) {
     $scope.search = {tags:[], members:[]};
     $scope.temp = {members:[]};
 
@@ -149,23 +178,24 @@ angular.module('csnDashboardApp')
 
     $scope.addSearchTerm = function() {
       $scope.search.tags.push($scope.tempTag);
-      console.log($scope.search.tags);
+      $log.info("Added Tags: " + JSON.stringify($scope.search.tags));
     };
 
     $scope.searchNetworkWithTag = function() {
-      var searchResource = $resource('http://54.64.74.178:8080/csn-restapi/csn/search');
+      var searchResource = $resource('/csn-restapi/csn/search');
       searchResource.save($scope.search.tags).$promise
         .then(function(response) {
           var resultNetworkArray = response.searchResult;
           $scope.search.members = resultNetworkArray;
-          console.log($scope.search.members);
+          $log.info("Network Search Member: " + JSON.stringify($scope.search.members));
         });
     };
   });
 
 angular.module('csnDashboardApp')
-  .controller('ModalInstanceCtrl2', function ($scope, $resource, $modalInstance) {
+  .controller('ModalInstanceCtrl2', function ($scope, $resource, $modalInstance, $log) {
     $scope.temp = {members:[]};
+    $scope.tempMember = "";
 
     $scope.ok = function () {
       $modalInstance.close($scope.temp.members);
@@ -176,7 +206,54 @@ angular.module('csnDashboardApp')
     };
 
     $scope.addTempMember = function() {
-      $scope.temp.members.push($scope.tempMember);
-      console.log($scope.temp.members);
+      var tempMember = false;
+      if($scope.tempMember == "") {
+        window.alert("Please correctly input a member");
+      } else {
+        $scope.temp.members.forEach(function(member){
+          if( meta == $scope.tempMember )
+            conflictFlag = true;
+        });
+        
+        if(conflictFlag)
+          window.alert("You can't put identical metadata key");
+        else {
+          $scope.temp.members.push($scope.tempMember);
+          $log.info("Network Search Member: "  + JSON.stringify($scope.temp.members));
+        }
+      }
     };
+
+    $scope.setNetworkID = function(id) {
+      $scope.tempMember = id;
+    }
+
+    $scope.pageChanged = function() {
+      $log.log('Page changed to: ' + $scope.currentPage);
+    };
+
+    $scope.pagingNetworks = function(curPage) {
+      $scope.currentPage = curPage;
+      $scope.itemsPerPage = 4;
+      var pageIndex = ($scope.currentPage - 1) * $scope.itemsPerPage;
+      $scope.pagedIDList = $scope.pagedTempIDList.slice(pageIndex, pageIndex+$scope.itemsPerPage);
+      $scope.pageChanged();
+    };
+
+    $scope.getSensorNetworks = function() {
+      var SensorNetworkIDResource = $resource('/csn-restapi/csn/networks?select=ids', {});
+      SensorNetworkIDResource.get().$promise
+        .then(function(response) {
+          var data = response
+          $scope.pagedTempIDList = data.ids;
+          $scope.totalItems = $scope.pagedTempIDList.length;
+          $log.info("Default Network List Lenght: " + $scope.totalItems);
+          $log.info("Default Network List: " + JSON.stringify($scope.pagedTempIDList));
+          $scope.pagingNetworks(1);
+        })
+        .catch(function(response) {
+          console.log(response);
+        });
+    };
+
   });

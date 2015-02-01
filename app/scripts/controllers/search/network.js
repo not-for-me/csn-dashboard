@@ -9,32 +9,32 @@
  */
 angular.module('csnDashboardApp')
   .controller('NetworkSearchController', function ($scope, $resource, $http, $log) {
-    $scope.search = { id: "-", tagSearchList:[]  };
+    $scope.search = { id: "-", tagResult: false, tagSearchList:[], tagSearchedList:[] };
+    $scope.pagedTempIDList = [];
+    $scope.pagedIDList = [];
 
-    $scope.getSensorNetworkCount = function() {
-      $http.get('/csn-restapi/csn/networks?select=counts').success(function(data){
-        console.log(data);
-        $scope.snCount = data;
-        $scope.totalItems = $scope.snCount.operatingCNT;
-      });
-    };
-
-    $scope.getSensorNetworks = function(curPage) {
-      $scope.currentPage = curPage;
-      $scope.itemsPerPage = 4;
-      $scope.pageIndex = ($scope.currentPage - 1) * $scope.itemsPerPage;
-
-      var SensorNetworkIDResource = $resource('/csn-restapi/csn/networks?select=ids', {index:$scope.pageIndex, num:$scope.itemsPerPage});
+    $scope.getSensorNetworks = function() {
+      var SensorNetworkIDResource = $resource('/csn-restapi/csn/networks?select=ids', {});
       SensorNetworkIDResource.get().$promise
         .then(function(response) {
           var data = response
-          $scope.idList = data.ids;
+          $scope.pagedTempIDList = data.ids;
+          $scope.totalItems = $scope.pagedTempIDList.length;
+          $log.info("Default Network List Lenght: " + $scope.totalItems);
+          $log.info("Default Network List: " + JSON.stringify($scope.pagedTempIDList));
+          $scope.pagingNetworks(1);
         })
         .catch(function(response) {
           console.log(response);
         });
+    };
 
-        $scope.pageChanged();
+    $scope.pagingNetworks = function(curPage) {
+      $scope.currentPage = curPage;
+      $scope.itemsPerPage = 4;
+      var pageIndex = ($scope.currentPage - 1) * $scope.itemsPerPage;
+      $scope.pagedIDList = $scope.pagedTempIDList.slice(pageIndex, pageIndex+$scope.itemsPerPage);
+      $scope.pageChanged();
     };
 
     $scope.pageChanged = function() {
@@ -46,13 +46,28 @@ angular.module('csnDashboardApp')
       $log.info("Added Search Tag: " + $scope.search.tagSearchList);
     };
 
+    $scope.clearSearchTagTerm = function() {
+      $scope.search.tagSearchList = [];
+      $scope.search.tagResult = false;
+      $log.info("Cleared Search Tag: " + $scope.search.tagSearchList);
+      $scope.getSensorNetworks(1);
+      $scope.search.tempTag = "";
+    };
+
     $scope.searchNetworkWithTag = function() {
-      var searchResource = $resource('http://54.64.74.178:8080/csn-restapi/csn/search');
+      var searchResource = $resource('/csn-restapi/csn/search');
       searchResource.save($scope.search.tagSearchList).$promise
         .then(function(response) {
           var resultNetworkArray = response.searchResult;
-          $scope.search.idListUsingTag = resultNetworkArray;
-          $log.info($scope.search.idListUsingTag);
+          $scope.pagedTempIDList = resultNetworkArray;
+          $scope.totalItems = $scope.pagedTempIDList.length;
+          $log.info("Tag Filtered List Lenght: " + $scope.totalItems);
+          $log.info("Tag Filtered List: " + JSON.stringify($scope.pagedTempIDList));
+          $scope.pagingNetworks(1);
+          $scope.search.tagResult = true;
+          $scope.search.tagSearchedList = $scope.search.tagSearchList;
+          $scope.search.tagSearchList = [];
+          $scope.search.tempTag = "";
         });
     };
 

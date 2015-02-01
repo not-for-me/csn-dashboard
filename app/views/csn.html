@@ -7,7 +7,7 @@
 		<div id="csn-conf-panel" class="col-md-8 col-sm-8 col-xs-12" ng-init="getCSNData()">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h3 class="panel-title">Configuration Settings</h3>
+					<h3 class="panel-title">Administration</h3>
 				</div>
 
 				<div class="panel-body">
@@ -39,13 +39,13 @@
 						<div class="form-group">
 							<label for="csn-admin-email" class="col-md-3 col-sm-3 col-xs-12 control-label">Persistance</label>
 							<div class="col-md-9 col-sm-9 col-xs-12">
-								<button type="button" class="btn btn-primary" ng-model="meta.persistOption" btn-checkbox btn-checkbox-true=true btn-checkbox-false=false ng-click="checkPersist()">Activate</button>
+								<button type="button" class="btn btn-primary" ng-model="meta.persistOption" btn-checkbox btn-checkbox-true="true" btn-checkbox-false="false" ng-click="checkPersist()">{{persistStatus}}</button>
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="csn-admin-time" class="col-sm-3 control-label">Creation Time</label>
+							<label for="csn-admin-time" class="col-sm-3 control-label">Initiation Time</label>
 							<div class="col-sm-9">
-								<input type="text" class="form-control" ng-model="meta.creationTime" val="meta.creationTime">
+								<input type="text" class="form-control" ng-model="meta.creationTime" val="meta.creationTime" disabled>
 							</div>
 						</div>
 					</form>
@@ -61,62 +61,8 @@
 				<button class="btn btn-primary btn-default csn-control" ng-click="startCSN()">Start CSN</button>
 				<button class="btn btn-success btn-default csn-control" ng-click="restartCSN()">Restart CSN</button>
 				<button class="btn btn-danger btn-default csn-control" ng-click="stopCSN()">Stop CSN</button>
-				<button class="btn btn-warning btn-default csn-control" disabled="disabled">Recovery CSN</button>
+				<button class="btn btn-warning btn-default csn-control" disabled="disabled">Recover CSN</button>
 			</div>
 		</div><!-- [panel] -->
 	</div> <!-- [1st row] Configuration settings panel div -->
-
-	<div class="row col-md-12 col-sm-12 col-xs-12" ng-init="getBrokerStatus()">
-		<div class="col-box col-md-6 col-sm-6 col-xs-12">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Message Queue Status</h3>
-				</div>
-				<table class="table table-bordered">
-					<tbody>
-						<tr class="">
-							<th>Queue Health</th>
-							<td>{{broker.status}}</td>
-						</tr>
-						<tr class="">
-							<th>Ratio of Storage Usage</th>
-							<td>{{broker.storage}} %</td>
-						</tr>
-						<tr class="">
-							<th>Ratio of Memory Usage</th>
-							<td>{{broker.mem}} %</td>
-						</tr>
-						<tr class="">
-							<th>Producer Num</th>
-							<td>{{broker.proNum}}</td>
-						</tr>
-						<tr class="">
-							<th>Consumer Num</th>
-							<td>{{broker.conNum}}</td>
-						</tr>
-					</tbody>
-				</table>
-			</div> <!-- [panel] -->
-		</div> <!-- [1st col-box] -->
-
-		<div class="col-box col-md-6 col-sm-6 col-xs-12">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h3 class="panel-title">Message Queue Transmisstion Counts</h3>
-				</div>
-				<table class="table table table-bordered">
-					<tbody>
-						<tr class="">
-							<th>Total In MSG CNT</th>
-							<td>{{broker.inNum}}</td>
-						</tr>
-						<tr class="">
-							<th>Total Out MSG CNT</th>
-							<td>{{broker.outNum}}</td>
-						</tr>
-					</tbody>
-				</table>
-			</div> <!-- [panel] -->
-		</div> <!-- [2nd col-box] -->
-	</div> <!-- [2nd row] Message queue status panel div -->
 </div>

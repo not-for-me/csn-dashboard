@@ -13,7 +13,7 @@ angular.module('csnDashboardApp')
 
     $scope.getSensorNetworkCount = function() {
       $http.get('/csn-restapi/csn/networks?select=counts').success(function(data){
-        console.log(data);
+        $log.info("Network Count: " + JSON.stringify(data));
         $scope.snCount = data;
         $scope.totalItems = $scope.snCount.operatingCNT;
       });
@@ -29,6 +29,7 @@ angular.module('csnDashboardApp')
         .then(function(response) {
           var data = response
           $scope.idList = data.ids;
+          $log.info("Network IDs: " + JSON.stringify(data));
         })
         .catch(function(response) {
           console.log(response);
@@ -38,21 +39,21 @@ angular.module('csnDashboardApp')
     };
 
     $scope.pageChanged = function() {
-      $log.log('Page changed to: ' + $scope.currentPage);
+      $log.info('Page changed to: ' + $scope.currentPage);
     };
 
     $scope.addSearchTagTerm = function(newTag) {
       $scope.search.tagSearchList.push(newTag);
-      $log.info("Added Search Tag: " + $scope.search.tagSearchList);
+      $log.info("Added Search Tag: " + JSON.stringify($scope.search.tagSearchList));
     };
 
     $scope.searchNetworkWithTag = function() {
-      var searchResource = $resource('http://54.64.74.178:8080/csn-restapi/csn/search');
+      var searchResource = $resource('/csn-restapi/csn/search');
       searchResource.save($scope.search.tagSearchList).$promise
         .then(function(response) {
           var resultNetworkArray = response.searchResult;
           $scope.search.idListUsingTag = resultNetworkArray;
-          $log.info($scope.search.idListUsingTag);
+          $log.info("Network Tag: "+ JSON.stringify($scope.search.idListUsingTag));
         });
     };
 
@@ -66,6 +67,7 @@ angular.module('csnDashboardApp')
       getResource.get({snID:$scope.search.id}).$promise
         .then(function(response) {
           $scope.search.network = response;
+          $log.info("Network Info: " + JSON.stringify($scope.search.network));
           window.alert('Search SensorNetwork Metadata');
         });
     };

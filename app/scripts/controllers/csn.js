@@ -8,10 +8,18 @@
  * Controller of the csnDashboardApp
  */
 angular.module('csnDashboardApp')
-  .controller('CSNController', function ($scope, $resource) {
+  .controller('CSNController', function ($scope, $resource, $log) {
     
-    $scope.persistStatus = "Deactivated";
+    $scope.persistStatus = "Activate";
     $scope.meta = {csnName:'-', adminName:'-', adminEmail:'-', persistOption: false, creationTime:'-'};
+
+    $scope.checkPersist = function() {
+      $log.info("Persist Action: " + JSON.stringify($scope.meta));
+      if($scope.meta.persistOption == true)
+        $scope.persistStatus = "Deactivate";
+      else 
+        $scope.persistStatus = "Activate";
+    };
 
     $scope.setCSNData = function() {
       var postResource = $resource('/csn-restapi/csn');
@@ -63,7 +71,6 @@ angular.module('csnDashboardApp')
             window.alert('Successfully Start the CSN!');
             $scope.getCSNStatus();
             $scope.getCSNData();
-            $scope.getBrokerStatus();
           });
       }
     };
@@ -81,7 +88,6 @@ angular.module('csnDashboardApp')
             window.alert('Successfully Retart the CSN!');
             $scope.getCSNStatus();
             $scope.getCSNData();
-            $scope.getBrokerStatus();
           });
       }
     };
@@ -94,7 +100,6 @@ angular.module('csnDashboardApp')
           window.alert('Successfully Stop the CSN!');
           $scope.getCSNStatus();
           $scope.getCSNData();
-          $scope.getBrokerStatus();
         });
     };
 
@@ -113,18 +118,6 @@ angular.module('csnDashboardApp')
         .catch(function(response) {
           console.log(response);
           $scope.status = {working:'Not Connected', label: 'danger'};
-        });
-    };
-
-    $scope.getBrokerStatus = function() {
-      var metadataResource = $resource('/csn-restapi/csn/broker/status');
-      metadataResource.get().$promise
-        .then(function(response) {
-          $scope.broker = response;
-        })
-        .catch(function(response) {
-          console.log(response);
-          $scope.broker = {status:'-', proNum:'-', conNum:'-', inNum:'-', outNum:'-', storage:'-', mem:'-'};
         });
     };
   });
